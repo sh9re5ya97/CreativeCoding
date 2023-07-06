@@ -64,8 +64,8 @@ class Atom{
         this.y=y;
         this.radius=Math.random()+1;
        // this.radius=11;
-        this.speedX=Math.random()*-22;//-2 +2
-        this.speedY=Math.random()*-2;//-2 +2
+        this.speedX=Math.random()*16-2;//-2 +2
+        this.speedY=Math.random()*16-2;//-2 +2
         this.color=color;
         //  var randomColor = Math.floor(Math.random()*16777215).toString(16);
         //  this.color=randomColor;
@@ -101,8 +101,8 @@ const generateAtoms=()=>{
     
       // Combine the blue value with fixed red and green values for shades of blue
       var randomColor = `#${redValue}${greenValue}${blueValue}`;
-        // atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
-        atoms.push(new Atom(canvas.width/2,canvas.height/2,randomColor));
+         atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
+        //atoms.push(new Atom(canvas.width/2,canvas.height/2,randomColor));
             }
    
 
