@@ -50,7 +50,7 @@ const animate=()=>{
 
         ctx.save();
        // ctx.fillStyle='rgba(255,255,255,0.4)';
-        ctx.fillStyle='rgba(0,0,0,0.1)';
+        ctx.fillStyle='rgba(0,0,0,0)';
         ctx.fillRect(0,0,canvas.width,canvas.height)
         ctx.restore();
 
@@ -64,8 +64,8 @@ class Atom{
         this.y=y;
         this.radius=Math.random()+1;
        // this.radius=11;
-        this.speedX=Math.random()*16-2;//-2 +2
-        this.speedY=Math.random()*16-2;//-2 +2
+        this.speedX=Math.random()*16-8;//-2 +2
+        this.speedY=Math.random()*16-8;//-2 +2
         this.color=color;
         //  var randomColor = Math.floor(Math.random()*16777215).toString(16);
         //  this.color=randomColor;
@@ -93,17 +93,20 @@ const point={
     x:0,
     y:0
 }
+let degree=0;
 const generateAtoms=()=>{
-    for (let i = 0; i < 8; i++) {
+    // for (let i = 0; i < 8; i++) {
         var blueValue = (Math.floor(Math.random() * 150)+156).toString(16).padStart(2, '0');
         var greenValue = (Math.floor(Math.random() * 200)).toString(16).padStart(2, '0');
         var redValue = (Math.floor(Math.random() * 250)+156).toString(16).padStart(2, '0');
     
       // Combine the blue value with fixed red and green values for shades of blue
       var randomColor = `#${redValue}${greenValue}${blueValue}`;
-         atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
-        //atoms.push(new Atom(canvas.width/2,canvas.height/2,randomColor));
-            }
+         //atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
+        atoms.push(new Atom(canvas.width/2 +(point.x*200),canvas.height/2+(point.y*200),randomColor));
+        point.x=Math.cos(degree/180*Math.PI)
+        degree++;
+        //  }
    
 
     requestAnimationFrame(generateAtoms)
