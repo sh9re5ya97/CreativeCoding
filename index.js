@@ -93,7 +93,7 @@ const point={
     x:0,
     y:0
 }
-let p=200;
+let p=500;
 let degree=0;
 const generateAtoms=()=>{
     // for (let i = 0; i < 8; i++) {
@@ -104,11 +104,15 @@ const generateAtoms=()=>{
       // Combine the blue value with fixed red and green values for shades of blue
       var randomColor = `#${redValue}${greenValue}${blueValue}`;
          //atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
-        atoms.push(new Atom(canvas.width/2 +(point.x*200),canvas.height/2+(point.y*200),randomColor));
+        atoms.push(new Atom(canvas.width/2 +(point.x*p),canvas.height/2+(point.y*p),randomColor));
         point.x=Math.cos(degree/180*Math.PI);
         point.y= Math.sin(degree/180*Math.PI);
         degree++;
-        p--;
+        if(p!=0){
+            p=p-0.3;
+            
+        }
+        
         //  }
    
 
