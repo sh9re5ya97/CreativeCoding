@@ -50,7 +50,7 @@ const animate=()=>{
 
         ctx.save();
        // ctx.fillStyle='rgba(255,255,255,0.4)';
-        ctx.fillStyle='rgba(0,0,0,0.1)';
+        ctx.fillStyle='rgba(0,0,0,0)';
         ctx.fillRect(0,0,canvas.width,canvas.height)
         ctx.restore();
 
@@ -93,6 +93,7 @@ const point={
     x:0,
     y:0
 }
+let p=200;
 let degree=0;
 const generateAtoms=()=>{
     // for (let i = 0; i < 8; i++) {
@@ -105,8 +106,9 @@ const generateAtoms=()=>{
          //atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
         atoms.push(new Atom(canvas.width/2 +(point.x*200),canvas.height/2+(point.y*200),randomColor));
         point.x=Math.cos(degree/180*Math.PI);
-        point.y= point.x*point.x;
+        point.y= Math.sin(degree/180*Math.PI);
         degree++;
+        p--;
         //  }
    
 
