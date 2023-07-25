@@ -29,26 +29,28 @@ class Point{
 
 let points=[];
 let count=0;
+let clickCount=0;
 let timeGap=50;
 
-//Top
-const Top=new Point(window.innerWidth/2,50);
-Top.draw();
-//Left
-const Left=new Point(50,window.innerHeight-50);
-Left.draw();
-//Right
-const Right=new Point(window.innerWidth-50,window.innerHeight-50);
-Right.draw();
+// //Top
+// const Top=new Point(window.innerWidth/2,50);
+// Top.draw();
+// //Left
+// const Left=new Point(50,window.innerHeight-50);
+// Left.draw();
+// //Right
+// const Right=new Point(window.innerWidth-50,window.innerHeight-50);
+// Right.draw();
 
-const triangle=[Top,Left,Right];
+//const triangle=[Top,Left,Right];
 function getRandomInt(min,max){
     return Math.floor(Math.random()*(max-min)+min)
 }
 function drawRest(prevPnt){
     let vertex,midPnt;
     if(count<5000){
-        vertex=triangle[getRandomInt(0,3)];
+        vertex=points[getRandomInt(0,3)];
+        // vertex=triangle[getRandomInt(0,3)];
         midPnt=new Point(
             (prevPnt.x+vertex.x)/2,
             (prevPnt.y+vertex.y)/2
@@ -61,38 +63,49 @@ function drawRest(prevPnt){
 
     }
 
-canvas.addEventListener('click',(e)=>{
- const randomPnt=new Point(e.x,e.y);
- randomPnt.draw();
- drawRest(randomPnt);
-},{once:true})
-
 // canvas.addEventListener('click',(e)=>{
-//     if(clickCount<3){
-//         console.log(e.x,e.y)
-//         var pnt={
-//             x:e.x,
-//             y:e.y
-//         }
-//         points.push(pnt);
-//     drawPoint(pnt);
-//         clickCount++;
-//     }
-//     if(clickCount==3){
-//       generateSerpinskiPoints();
-//     }
+//  const randomPnt=new Point(e.x,e.y);
+//  randomPnt.draw();
+//  drawRest(randomPnt);
+// },{once:true})
+
+canvas.addEventListener('click',(e)=>{
+    if(clickCount<3){
+        console.log(e.x,e.y)
+        const Pnt=new Point(e.x,e.y);
+        Pnt.draw();
+        points.push(Pnt);
+        clickCount++;
+    }
+    if(clickCount==3){
+      let randomPoint= getPointInTriangle();
+      drawRest(randomPoint);
+    }
     
-// })
+})
+
+function getPointInTriangle(){
+    const randomU = Math.random();
+  const randomV = Math.random();
+
+  // Ensure that the random point is within the triangle by limiting the range of u and v
+  const u = Math.sqrt(randomU);
+  const v = (1 - u) * randomV;
+
+  // Calculate the coordinates of the random point within the triangle
+  const x = points[0].x * u + points[1].x * v + points[2].x * (1 - u - v);
+  const y = points[0].y * u + points[1].y * v + points[2].y * (1 - u - v);
+    let randomPoint=new Point(x,y)
+    randomPoint.draw();
+  return randomPoint;
+}
+
 const generateSerpinskiPoints=()=>{
     // do{
     //     Math.random()
     // }
     // while();
-    let pointRandom={
-        x:points[0].x+(points[2].x-points[0].x)/3,
-        y:points[1].y+(points[2].y-points[1].y)/3
-    }
-    draw(pointRandom);
+    
     let stopper=0;
     for(let i=0;i<4;i++){
         if(i==3){
@@ -109,12 +122,7 @@ const generateSerpinskiPoints=()=>{
     }
 
 }
-const midPoint=(a,b)=>{
-    return{
-        x:Math.min(a.x,b.x)+Math.abs(a.x-b.x)/2,
-        y:Math.min(a.y,b.y)+Math.abs(a.y-b.y)/2
-    }
-}
+
 
 let p=500;
 let degree=0;
