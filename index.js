@@ -4,119 +4,117 @@ canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 console.log(ctx);
 
-
-// canvas.addEventListener('mousemove',(e)=>{
-//     ctx.beginPath();
-//     ctx.rect(e.x,e.y,10,10);
-//     ctx.fill();
-// })
-
-
-// const degToRad=(deg)=>{
-// return(deg/180)*Math.PI;
-// }
-// ctx.beginPath();
-// ctx.arc(100,100,200,0,degToRad(90));
-// ctx.stroke();
-// ctx.fill();
-let atoms=[];
-
-// canvas.addEventListener('mousemove',(e)=>{
-//   //  var randomColor = Math.floor(Math.random()*200000).toString(16);
-//     var blueValue = Math.floor(Math.random() * 250).toString(16).padStart(2, '0');
-//     var greenValue = Math.floor(Math.random() * 250).toString(16).padStart(2, '0');
-//     var redValue = Math.floor(Math.random() * 250).toString(16).padStart(2, '0');
-
-//   // Combine the blue value with fixed red and green values for shades of blue
-//   var randomColor = `#${redValue}${greenValue}${blueValue}`;
-//   console.log(randomColor)
-
-//     for (let i = 0; i < 20; i++) {
-//         // ctx.fillStyle = '#'+randomColor;
-//         atoms.push(new Atom(e.x,e.y,randomColor));
-//     }
-// })
-
-
-const animate=()=>{
-        atoms.forEach((atom,index)=>{
-            atom.draw();
-            atom.updateSpeed();
-            atom.updateSize();
-            if(atom.radius<0.1){
-                atoms.splice(index,1);
-            }
-        })
-
-        ctx.save();
-       // ctx.fillStyle='rgba(255,255,255,0.4)';
-        ctx.fillStyle='rgba(0,0,0,0)';
-        ctx.fillRect(0,0,canvas.width,canvas.height)
-        ctx.restore();
-
-        requestAnimationFrame(animate);
+function randomColor(){
+    var blueValue = (Math.floor(Math.random() * 150)).toString(16).padStart(2, '0');
+        var greenValue = (Math.floor(Math.random() * 100)).toString(16).padStart(2, '0');
+        var redValue = (Math.floor(Math.random() * 150)).toString(16).padStart(2, '0');
+    
+      // Combine the blue value with fixed red and green values for shades of blue
+      return`#${redValue}00${blueValue}`;
 }
-
-animate();
-class Atom{
-    constructor(x,y,color){
+class Point{
+    constructor(x,y){
         this.x=x;
         this.y=y;
-        this.radius=Math.random()+1;
-       // this.radius=11;
-        this.speedX=Math.random()*4-2;//-2 +2
-        this.speedY=Math.random()*4-2;//-2 +2
-        this.color=color;
-        //  var randomColor = Math.floor(Math.random()*16777215).toString(16);
-        //  this.color=randomColor;
-        // console.log(randomColor);
-
-    }
-
-    updateSpeed(){
-        this.x+=this.speedX;
-        this.y+=this.speedY;
-    }
-
-    updateSize(){
-        this.radius-=0.1;
+        this.radius=3;
     }
 
     draw(){
         ctx.beginPath();
         ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = randomColor();
         ctx.fill();
     }
 }
-const point={
-    x:0,
-    y:0
+
+let points=[];
+let count=0;
+let timeGap=50;
+
+//Top
+const Top=new Point(window.innerWidth/2,50);
+Top.draw();
+//Left
+const Left=new Point(50,window.innerHeight-50);
+Left.draw();
+//Right
+const Right=new Point(window.innerWidth-50,window.innerHeight-50);
+Right.draw();
+
+const triangle=[Top,Left,Right];
+function getRandomInt(min,max){
+    return Math.floor(Math.random()*(max-min)+min)
 }
+function drawRest(prevPnt){
+    let vertex,midPnt;
+    if(count<5000){
+        vertex=triangle[getRandomInt(0,3)];
+        midPnt=new Point(
+            (prevPnt.x+vertex.x)/2,
+            (prevPnt.y+vertex.y)/2
+        );
+        midPnt.draw();
+        setTimeout(()=>{drawRest(midPnt);},timeGap);
+        count++;
+        timeGap-=1;
+        }
+
+    }
+
+canvas.addEventListener('click',(e)=>{
+ const randomPnt=new Point(e.x,e.y);
+ randomPnt.draw();
+ drawRest(randomPnt);
+},{once:true})
+
+// canvas.addEventListener('click',(e)=>{
+//     if(clickCount<3){
+//         console.log(e.x,e.y)
+//         var pnt={
+//             x:e.x,
+//             y:e.y
+//         }
+//         points.push(pnt);
+//     drawPoint(pnt);
+//         clickCount++;
+//     }
+//     if(clickCount==3){
+//       generateSerpinskiPoints();
+//     }
+    
+// })
+const generateSerpinskiPoints=()=>{
+    // do{
+    //     Math.random()
+    // }
+    // while();
+    let pointRandom={
+        x:points[0].x+(points[2].x-points[0].x)/3,
+        y:points[1].y+(points[2].y-points[1].y)/3
+    }
+    draw(pointRandom);
+    let stopper=0;
+    for(let i=0;i<4;i++){
+        if(i==3){
+            i=0;
+        }
+        mid=midPoint(pointRandom,points[i]);
+        drawPoint(mid);
+        console.log(i)
+        
+        pointRandom=mid;
+        stopper++;
+        console.log(stopper)
+        if(stopper==100000){break};
+    }
+
+}
+const midPoint=(a,b)=>{
+    return{
+        x:Math.min(a.x,b.x)+Math.abs(a.x-b.x)/2,
+        y:Math.min(a.y,b.y)+Math.abs(a.y-b.y)/2
+    }
+}
+
 let p=500;
 let degree=0;
-const generateAtoms=()=>{
-    // for (let i = 0; i < 8; i++) {
-        var blueValue = (Math.floor(Math.random() * 150)+156).toString(16).padStart(2, '0');
-        var greenValue = (Math.floor(Math.random() * 200)).toString(16).padStart(2, '0');
-        var redValue = (Math.floor(Math.random() * 250)+156).toString(16).padStart(2, '0');
-    
-      // Combine the blue value with fixed red and green values for shades of blue
-      var randomColor = `#${redValue}${greenValue}${blueValue}`;
-         //atoms.push(new Atom(Math.random()*canvas.width,Math.random()*canvas.height,randomColor));
-        atoms.push(new Atom(canvas.width/2 +(point.x*p),canvas.height/2+(point.y*p),randomColor));
-        point.x=Math.cos(degree/180*Math.PI);
-        point.y= Math.sin(degree/180*Math.PI);
-        degree++;
-        if(p!=0){
-            p=p-0.3;
-            
-        }
-        
-        //  }
-   
-
-    requestAnimationFrame(generateAtoms)
-}
-
-generateAtoms();
