@@ -2,7 +2,7 @@ const canvas=document.getElementById("my-canvas");
 const ctx=canvas.getContext("2d");
 
 const img=new Image();
-img.src='skull3.jpg';
+img.src='skull6.jpg';
 let brightnessArray=[];
 let particlesArray=[];
 
@@ -11,14 +11,14 @@ class Particle{
         this.x=Math.random()*canvas.width;
         this.y=0;
         this.brightness=0;
-        this.velocity=Math.random()*3+0.2;
+        this.velocity=Math.random()*1+0.07;
         this.radius=Math.random()*1.5+1;  
     }
     update(){
         this.y+=this.velocity;
         if(this.y>=canvas.height){
             this.y=0;
-            //this.x=Math.random()*canvas.width;
+            this.x=Math.random()*canvas.width;
         }
         this.brightness=brightnessArray[Math.floor(this.y-1)*canvas.width+Math.floor(this.x)];
     }
@@ -47,15 +47,16 @@ img.onload=function(){
         brightnessArray.push(brightness);
     }
 
-    for(let i=0;i<10000;i++){
+    for(let i=0;i<9000;i++){
         particlesArray.push(new Particle());
     }
 
     const animate=()=>{
-        ctx.globalAlpha=0.05;
+        ctx.globalAlpha=0.03;
         ctx.fillStyle='black';
         ctx.fillRect(0,0,canvas.width,canvas.height);
         particlesArray.forEach(particle=>{
+            debugger
             particle.update();
             ctx.globalAlpha=particle.brightness*0.002;
             particle.draw();
