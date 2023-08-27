@@ -39,6 +39,7 @@ img.onload=function(){
     canvas.height=img.height;
     ctx.drawImage(img,0,0,canvas.width,canvas.height);
     const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height)
     console.log(imgData);
 
     for(let i =0;i<imgData.data.length;i++){
