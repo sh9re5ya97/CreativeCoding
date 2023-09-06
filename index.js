@@ -64,8 +64,8 @@ class Atom{
         this.y=y;
         this.radius=Math.random()+1;
        // this.radius=11;
-        this.speedX=Math.random()*4-2;//-2 +2
-        this.speedY=Math.random()*4-2;//-2 +2
+        this.speedX=Math.random()*10-5;//-2 +2
+        this.speedY=Math.random()*10-5;//-2 +2
         this.color=color;
         //  var randomColor = Math.floor(Math.random()*16777215).toString(16);
         //  this.color=randomColor;
