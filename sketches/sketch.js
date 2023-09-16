@@ -4,7 +4,7 @@ const settings = {
   dimensions: [ 2048, 2048 ],
   //dimensions:  'A4',
   orientation: 'landscape',
-  animate:true
+   animate:true
 };
 
 // const canvas = document.getElementsByTagName("canvas"); // Replace "myCanvas" with your canvas ID
@@ -15,22 +15,31 @@ const settings = {
 // });
 const sketch = (context) => {
   let circles=[];
-  for(let i=0;i<5;i++){
+
+  // const canvas = document.getElementById('myCanvas');
+  // canvas.addEventListener('click', (event) => {
+  //   // Get the x and y coordinates of the click event
+  //   const x = event.clientX - canvas.getBoundingClientRect().left;
+  //   const y = event.clientY - canvas.getBoundingClientRect().top;
+  //   circles.push(new Circle(e.pageX+e.offsetX+e.currentTarget.offsetLeft, e.pageY+e.offsetY+e.currentTarget.offsetTop,Math.random()*20+5));
+  // });
+    
+
+  for(let i=0;i<100;i++){
     circles.push(new Circle(Math.random()*2048,Math.random()*2048,Math.random()*20+5));
   }
-    context.canvas.addEventListener('click',(e)=>{
-      // if(circles.length<300){
-        // for(let i=0;i<1;i++){
-          circles.push(new Circle(Math.random()*2048,Math.random()*2048,Math.random()*20+5));
-        // }
-      // }
-  })
+  context.canvas.addEventListener('click', (e) => {
+    console.log(e)
+    const x= e.offsetX+e.pageX+e.x+ context.canvas.getBoundingClientRect().left;
+    const y= e.offsetY+e.pageY+e.y+ context.canvas.getBoundingClientRect().top;
+    console.log(x,y)
+
+    // const x = e.clientX - context.canvas.getBoundingClientRect().left;
+    // const y = e.clientY - context.canvas.getBoundingClientRect().top;
+    circles.push(new Circle(x, y, Math.random() * 20 + 5));
+  });
   
   return ({ context, width, height }) => {
-    
-  
-   
-    
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
     context.fillStyle='black';
@@ -41,8 +50,7 @@ const sketch = (context) => {
         const circle2=circles[j];
         const distance=getDistance(circle1.x,circle2.x,circle1.y,circle2.y)
         if(distance<250){
-            // context.strokeStyle =randomColorGen() ;
-          context.strokeStyle ='black';
+        //context.strokeStyle ='grey';
           context.lineWidth=10-distance/25;
           context.beginPath();
           context.moveTo(circle1.x,circle1.y);
@@ -62,7 +70,6 @@ const sketch = (context) => {
   };
 };
 
-console.log(sketch)
 
 const getDistance=(x1,x2,y1,y2)=>{
   const a = x2-x1;
@@ -92,6 +99,7 @@ class Circle{
   }
 
   draw(context){
+    // console.log('dot',this.x,this.y)
     context.strokeStyle=this.color;
     context.beginPath();
     context.arc(this.x,this.y,this.radius,0,Math.PI*2);
